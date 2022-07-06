@@ -1,22 +1,22 @@
-import PropTypes from 'prop-types';
 import ContactItem from '../ContactItem/ContactItem';
-const ContactList = ({ contacts, onDeleteContact }) => (
-  <ul>
-    {contacts.map(contact => (
-      <ContactItem
-        contact={contact}
-        onDeleteContact={onDeleteContact}
-        key={contact.id}
-      />
-    ))}
-  </ul>
-);
-ContactList.propTypes = {
-  onDeleteContact: PropTypes.func,
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-    })
-  ),
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../../redux/actions';
+import { getVisibleContacts } from '../../redux/selectors';
+const ContactList = () => {
+  const contacts = useSelector(getVisibleContacts);
+  const dispatch = useDispatch();
+  const onDeleteContact = id => dispatch(actions.deleteContact(id));
+  return (
+    <ul>
+      {contacts.map(contact => (
+        <ContactItem
+          contact={contact}
+          onDeleteContact={onDeleteContact}
+          key={contact.id}
+        />
+      ))}
+    </ul>
+  );
 };
+
 export default ContactList;
