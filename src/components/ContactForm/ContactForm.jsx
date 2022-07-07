@@ -11,8 +11,6 @@ function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  // const contact = { name, number };
-
   const nameId = nanoid();
   const numberId = nanoid();
 
@@ -31,31 +29,20 @@ function ContactForm() {
     }
   };
 
-  const checkRepeatName = name => {
-    return contacts.find(
-      contact => contact.name.toLowerCase() === name.toLowerCase()
-    );
-  };
-
-  const checkRepeatPhone = number => {
-    return contacts.find(contact => contact.number === number);
-  };
+  const checkContact = (field, value) =>
+    contacts.find(contact => contact[field] === value);
 
   const handleSubmit = event => {
     event.preventDefault();
 
-    if (checkRepeatName(name)) {
-      alert(`${name} is already added.`);
-    } else if (checkRepeatPhone(number)) {
+    if (checkContact('name', name)) alert(`${name} is already added.`);
+    else if (checkContact('number', number))
       alert(`${number} is already added.`);
-    } else if (name.trim() === '' || number.trim() === '') {
-      alert('All of inputs must be not empty');
-    } else {
+    else {
       dispatch(addContact(name, number));
+      setName('');
+      setNumber('');
     }
-
-    setName('');
-    setNumber('');
   };
 
   return (
